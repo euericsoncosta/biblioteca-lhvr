@@ -1,5 +1,5 @@
 import Livro from '../models/Livro.js';
-import { Op } from 'sequelize';
+import { Op, literal } from 'sequelize';
 
 class LivroController {
   // Listagem de Livros com Ordenação por Tombo e Filtros
@@ -8,20 +8,17 @@ class LivroController {
       const { nome, tombo } = req.query;
       const where = {};
 
-      // Filtro por Nome (Busca parcial)
       if (nome) {
         where.nome = { [Op.like]: `%${nome}%` };
       }
 
-      // Filtro por Tombo (Busca exata ou parcial dependendo da sua preferência)
       if (tombo) {
         where.tombo = { [Op.like]: `%${tombo}%` };
       }
 
-      // Ordenação alterada de 'nome' para 'tombo'
       const livros = await Livro.findAll({ 
         where,
-        order: [['tombo', 'ASC']] 
+        order: [[literal('CAST(tombo AS UNSIGNED)'), 'ASC']] 
       });
 
       return res.render('livros/index', { 
@@ -34,14 +31,27 @@ class LivroController {
     }
   }
 
-  // Página de criação (Acesso restrito)
+  // Página de criação com Sugestão de Próximo Tombo
   async create(req, res) {
     const { tipo_usuario } = req.session.user;
     if (tipo_usuario !== 'ADMIN' && tipo_usuario !== 'BIBLIOTECARIO') {
       req.flash('error', 'Acesso negado.');
       return res.redirect('/livros');
     }
-    return res.render('livros/create');
+
+    try {
+      // Busca o último livro inserido ordenando pelo tombo numericamente
+      const ultimoLivro = await Livro.findOne({
+        order: [[literal('CAST(tombo AS UNSIGNED)'), 'DESC']]
+      });
+
+      // Se existir um livro, soma 1. Se não, começa do 1.
+      const proximoTombo = ultimoLivro ? parseInt(ultimoLivro.tombo) + 1 : 1;
+
+      return res.render('livros/create', { proximoTombo });
+    } catch (e) {
+      return res.render('livros/create', { proximoTombo: '' });
+    }
   }
 
   // Gravar no banco de dados
