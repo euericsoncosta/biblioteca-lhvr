@@ -1,5 +1,6 @@
 import Livro from '../models/Livro.js';
 import { Op, literal } from 'sequelize';
+import ExcelJS from 'exceljs'; // Importação necessária para o Excel
 
 class LivroController {
   // Listagem de Livros com Ordenação por Tombo e Filtros
@@ -31,6 +32,63 @@ class LivroController {
     }
   }
 
+  // NOVO MÉTODO: Exportar Acervo Completo para Excel
+  async exportarLivros(req, res) {
+    try {
+      // Busca todos os livros ordenados por tombo
+      const livros = await Livro.findAll({
+        order: [[literal('CAST(tombo AS UNSIGNED)'), 'ASC']]
+      });
+
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Acervo Completo');
+
+      // Configuração das colunas do Excel
+      worksheet.columns = [
+        { header: 'Tombo', key: 'tombo', width: 10 },
+        { header: 'Título', key: 'nome', width: 40 },
+        { header: 'Autor', key: 'autor', width: 30 },
+        { header: 'Ano', key: 'ano', width: 10 },
+        { header: 'Editora', key: 'editora', width: 25 },
+        { header: 'Categoria', key: 'categoria', width: 20 },
+        { header: 'Status', key: 'status', width: 15 }
+      ];
+
+      // Estilização do cabeçalho
+      worksheet.getRow(1).font = { bold: true };
+      worksheet.getRow(1).fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFE0E7FF' } // Cor indigo suave
+      };
+
+      // Adiciona os dados dos livros à tabela
+      livros.forEach(livro => {
+        worksheet.addRow({
+          tombo: livro.tombo,
+          nome: livro.nome,
+          autor: livro.autor,
+          ano: livro.ano,
+          editora: livro.editora,
+          categoria: livro.categoria,
+          status: livro.status.toUpperCase()
+        });
+      });
+
+      // Configura os headers para o download do navegador
+      const timestamp = new Date().toISOString().split('T')[0];
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename=Acervo_Biblioteca_LHVR_${timestamp}.xlsx`);
+
+      await workbook.xlsx.write(res);
+      return res.end();
+
+    } catch (error) {
+      console.error("Erro na exportação do acervo:", error);
+      return res.status(500).send("Erro ao gerar o ficheiro Excel.");
+    }
+  }
+
   // Página de criação com Sugestão de Próximo Tombo
   async create(req, res) {
     const { tipo_usuario } = req.session.user;
@@ -40,14 +98,11 @@ class LivroController {
     }
 
     try {
-      // Busca o último livro inserido ordenando pelo tombo numericamente
       const ultimoLivro = await Livro.findOne({
         order: [[literal('CAST(tombo AS UNSIGNED)'), 'DESC']]
       });
 
-      // Se existir um livro, soma 1. Se não, começa do 1.
       const proximoTombo = ultimoLivro ? parseInt(ultimoLivro.tombo) + 1 : 1;
-
       return res.render('livros/create', { proximoTombo });
     } catch (e) {
       return res.render('livros/create', { proximoTombo: '' });
