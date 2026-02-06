@@ -50,7 +50,7 @@ routes.use(authMiddleware);
 // Todos os logados vêem o Dashboard
 routes.get("/", HomeController.index);
 routes.get("/ranking", HomeController.rankingLeitores);
-
+routes.get("/exportar-ranking", HomeController.exportarRanking);
 // --- ROTAS RESTRITAS (STAFF) ---
 // Livros e Empréstimos só para BIBLIOTECÁRIO ou ADMIN
 routes.get("/livros", staffOnly, LivroController.index);
