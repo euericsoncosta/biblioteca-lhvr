@@ -1,0 +1,98 @@
+<div class="mb-8">
+    <a href="/usuarios" class="inline-flex items-center gap-2 text-slate-400 hover:text-indigo-600 font-bold text-xs uppercase tracking-widest mb-4 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Cancelar Edição
+    </a>
+    
+    <div class="flex items-center gap-3">
+        <h2 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Editar Perfil</h2>
+        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-lg text-[10px] font-black tracking-widest uppercase">
+            ID: {{usuario.id}}
+        </span>
+    </div>
+    <p class="text-slate-500 dark:text-slate-400 font-medium">Atualize os dados cadastrais ou o nível de privilégio.</p>
+</div>
+
+<div class="max-w-4xl bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 p-8 md:p-12">
+    <form action="/usuarios/update/{{usuario.id}}" method="POST" class="space-y-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="md:col-span-2">
+                <label class="block text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Nome Completo
+                </label>
+                <input type="text" name="nome" value="{{usuario.nome}}" required 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    E-mail Institucional
+                </label>
+                <input type="email" name="email" value="{{usuario.email}}" required 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Alterar Senha (Opcional)
+                </label>
+                <input type="password" name="senha" placeholder="Deixe em branco para manter" 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <label class="block text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Matrícula / Documento
+                </label>
+                <input type="text" name="documento" value="{{usuario.documento}}" required 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white font-mono uppercase">
+            </div>
+
+            <div class="relative">
+                <label class="block text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Curso
+                </label>
+                <select name="curso" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white appearance-none cursor-pointer">
+                    <option value="" {{#if (eq usuario.curso '')}}selected{{/if}}>Selecione o curso...</option>
+                    <option value="Enfermagem" {{#if (eq usuario.curso 'Enfermagem')}}selected{{/if}}>Enfermagem</option>
+                    <option value="Informatica" {{#if (eq usuario.curso 'Informatica')}}selected{{/if}}>Informática</option>
+                    <option value="Finanças" {{#if (eq usuario.curso 'Finanças')}}selected{{/if}}>Finanças</option>
+                    <option value="Segurança do trabalho" {{#if (eq usuario.curso 'Segurança do trabalho')}}selected{{/if}}>Segurança do Trabalho</option>
+                    <option value="Agronegocio" {{#if (eq usuario.curso 'Agronegocio')}}selected{{/if}}>Agronegócio</option>
+                </select>
+                <div class="absolute right-5 top-[3.2rem] pointer-events-none text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="relative">
+                <label class="block text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Nível de Acesso
+                </label>
+                <select name="tipo_usuario" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white appearance-none cursor-pointer">
+                    <option value="ALUNO" {{#if (eq usuario.tipo_usuario 'ALUNO')}}selected{{/if}}>Aluno</option>
+                    <option value="BIBLIOTECARIO" {{#if (eq usuario.tipo_usuario 'BIBLIOTECARIO')}}selected{{/if}}>Bibliotecário</option>
+                    <option value="ADMIN" {{#if (eq usuario.tipo_usuario 'ADMIN')}}selected{{/if}}>Administrador</option>
+                </select>
+                <div class="absolute right-5 top-[3.2rem] pointer-events-none text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-8 border-t border-slate-50 dark:border-slate-700 flex justify-end gap-4">
+            <button type="submit" class="w-full md:w-auto px-12 py-4 bg-indigo-600 text-white rounded-2xl font-black shadow-xl shadow-indigo-100 dark:shadow-none hover:bg-indigo-700 active:scale-95 transition-all">
+                Salvar Alterações
+            </button>
+        </div>
+    </form>
+</div>

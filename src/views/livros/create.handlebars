@@ -1,0 +1,87 @@
+<div class="mb-8">
+    <a href="/livros" class="inline-flex items-center gap-2 text-slate-400 hover:text-indigo-600 font-bold text-sm mb-4 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Voltar ao Acervo
+    </a>
+    <h2 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Catalogar Novo Livro</h2>
+    <p class="text-slate-500 dark:text-slate-400 font-medium">Insira as informações técnicas para registar a obra no sistema.</p>
+</div>
+
+<div class="max-w-4xl bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 p-8 md:p-12">
+    <form action="/livros/store" method="POST" class="space-y-8">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="md:col-span-2">
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Título do Livro
+                </label>
+                <input type="text" name="nome" required placeholder="Ex: Os Lusíadas" 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+            </div>
+
+            <div>
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Autor
+                </label>
+                <input type="text" name="autor" required placeholder="Nome do autor" 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+            </div>
+
+            <div>
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Número de Tombo (ID Único)
+                </label>
+                <input type="text" name="tombo" required placeholder="Ex: LHVR-001" 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white font-mono">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Ano
+                </label>
+                <input type="number" name="ano" placeholder="2024" 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+            </div>
+            
+            <div>
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Editora
+                </label>
+                <input type="text" name="editora" placeholder="Nome da editora" 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+            </div>
+            
+            <div class="relative">
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Categoria
+                </label>
+                <select name="categoria" 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white appearance-none cursor-pointer">
+                    <option value="Literatura">Literatura</option>
+                    <option value="Ficção">Ficção</option>
+                    <option value="Didático">Didático</option>
+                    <option value="História">História</option>
+                    <option value="Outros">Outros</option>
+                </select>
+                <div class="absolute right-5 top-[3.2rem] pointer-events-none text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-50 dark:border-slate-700 flex justify-end gap-4">
+            <button type="reset" class="px-8 py-4 text-slate-400 font-bold hover:text-slate-600 transition-colors">
+                Limpar Campos
+            </button>
+            <button type="submit" class="px-10 py-4 bg-indigo-600 text-white rounded-2xl font-black shadow-xl shadow-indigo-100 dark:shadow-none hover:bg-indigo-700 active:scale-95 transition-all">
+                Finalizar Registo
+            </button>
+        </div>
+    </form>
+</div>

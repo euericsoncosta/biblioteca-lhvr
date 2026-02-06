@@ -1,0 +1,93 @@
+<div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+        <h2 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Ranking de Leitores 🏆</h2>
+        <p class="text-slate-500 dark:text-slate-400 font-medium">Os alunos que mais leram na Biblioteca LHVR.</p>
+    </div>
+    
+    <div class="flex gap-2">
+        <a href="/exportar-ranking?dataInicio={{filtros.dataInicio}}&dataFim={{filtros.dataFim}}" 
+           class="px-6 py-3 bg-emerald-600 text-white rounded-2xl font-black text-sm shadow-xl shadow-emerald-100 dark:shadow-none hover:bg-emerald-700 transition-all flex items-center gap-2 active:scale-95">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Exportar Excel
+        </a>
+    </div>
+</div>
+
+<div class="bg-white dark:bg-slate-800 p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-700 mb-8">
+    <form action="/ranking" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+        <div>
+            <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Data Início</label>
+            <input type="date" name="dataInicio" value="{{filtros.dataInicio}}"
+                class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-3.5 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+        </div>
+        <div>
+            <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Data Fim</label>
+            <input type="date" name="dataFim" value="{{filtros.dataFim}}"
+                class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-3.5 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+        </div>
+        <button type="submit" class="bg-slate-800 dark:bg-indigo-600 text-white py-4 rounded-2xl font-black text-sm hover:opacity-90 transition-all shadow-lg shadow-slate-200 dark:shadow-none">
+            Filtrar Período
+        </button>
+    </form>
+</div>
+
+<div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 uppercase text-[10px] font-black tracking-widest border-b dark:border-slate-700">
+                    <th class="px-8 py-5 w-20 text-center">Pos.</th>
+                    <th class="px-8 py-5">Leitor</th>
+                    <th class="px-8 py-5">Curso / Documento</th>
+                    <th class="px-8 py-5 text-right">Total de Leituras</th>
+                </tr>
+            </thead>
+            
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
+                {{#each ranking}}
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors">
+                    <td class="px-8 py-5 text-center">
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl font-black text-sm
+                            {{#if (eq (math @index '+' 1) 1)}}bg-amber-100 text-amber-600 dark:bg-amber-900/30{{/if}}
+                            {{#if (eq (math @index '+' 1) 2)}}bg-slate-100 text-slate-500 dark:bg-slate-700{{/if}}
+                            {{#if (eq (math @index '+' 1) 3)}}bg-orange-100 text-orange-600 dark:bg-orange-900/30{{/if}}
+                            {{#unless (eq @index 0)}}{{#unless (eq @index 1)}}{{#unless (eq @index 2)}}bg-slate-50 dark:bg-slate-900/50 text-slate-400{{/unless}}{{/unless}}{{/unless}}">
+                            {{math @index "+" 1}}º
+                        </span>
+                    </td>
+
+                    <td class="px-8 py-5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 font-bold border dark:border-indigo-800">
+                                {{substring this.aluno.nome 0 1}}
+                            </div>
+                            <span class="font-bold text-slate-700 dark:text-slate-200">{{this.aluno.nome}}</span>
+                        </div>
+                    </td>
+
+                    <td class="px-8 py-5">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-semibold text-slate-500 dark:text-slate-400">{{this.aluno.curso}}</span>
+                            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-tighter">{{this.aluno.documento}}</span>
+                        </div>
+                    </td>
+
+                    <td class="px-8 py-5 text-right">
+                        <span class="px-5 py-2 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-2xl font-black text-lg">
+                            {{this.total_leituras}}
+                        </span>
+                    </td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td colspan="4" class="px-8 py-20 text-center text-slate-400 font-medium italic">
+                        Nenhum registro de leitura encontrado no período selecionado.
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

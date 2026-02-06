@@ -1,0 +1,10 @@
+entrar na pasta e dar: npm i
+no arquivo package.json: apagar a linha type module. depois dar: npx sequelize-cli db:migrate
+depois dar ctrl + z para voltar a linha: type:module
+    
+comando para cirar user admin: => node src/database/seeders/seedUser.js
+user@servicedesk.com
+user123
+
+comando: npm run dev
+

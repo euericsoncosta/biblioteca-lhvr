@@ -1,0 +1,66 @@
+<div class="mb-8">
+    <a href="/emprestimos" class="inline-flex items-center gap-2 text-slate-400 hover:text-indigo-600 font-bold text-xs uppercase tracking-widest mb-4 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Voltar ao Histórico
+    </a>
+    <h2 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Gerir Movimentação</h2>
+    <p class="text-slate-500 dark:text-slate-400 font-medium">Finalize o processo de devolução ou atualize o estado desta operação.</p>
+</div>
+
+<div class="max-w-4xl bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 p-8 md:p-12">
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+        <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800">
+            <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Obra e Exemplar</p>
+            <h4 class="font-bold text-lg dark:text-white">{{movimentacao.livro.nome}}</h4>
+            <p class="text-sm font-mono text-slate-500 tracking-tighter">TOMBO: {{movimentacao.livro.tombo}}</p>
+        </div>
+        
+        <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800">
+            <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Utilizador</p>
+            <h4 class="font-bold text-lg dark:text-white">{{movimentacao.aluno.nome}}</h4>
+            <p class="text-sm text-slate-500">DOC: {{movimentacao.aluno.documento}}</p>
+        </div>
+    </div>
+
+    <form action="/emprestimos/update/{{movimentacao.id}}" method="POST" class="space-y-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <div class="relative">
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Estado da Movimentação
+                </label>
+                <select name="status_movimentacao" required 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white appearance-none cursor-pointer">
+                    <option value="ativo" {{#if (eq movimentacao.status_movimentacao 'ativo')}}selected{{/if}}>Em Curso (Ativo)</option>
+                    <option value="devolvido" {{#if (eq movimentacao.status_movimentacao 'devolvido')}}selected{{/if}}>Finalizado (Devolvido)</option>
+                    <option value="atrasado" {{#if (eq movimentacao.status_movimentacao 'atrasado')}}selected{{/if}}>Em Atraso</option>
+                    <option value="cancelado" {{#if (eq movimentacao.status_movimentacao 'cancelado')}}selected{{/if}}>Cancelado</option>
+                </select>
+                <div class="absolute right-5 top-[3.2rem] pointer-events-none text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Data de Devolução Real
+                </label>
+                <input type="date" name="data_devolucao_real" 
+                    value="{{dateFormat movimentacao.data_devolucao_real 'YYYY-MM-DD'}}"
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+                <p class="mt-2 text-[10px] text-slate-400 ml-1 italic">* Preencha apenas se o livro já foi entregue.</p>
+            </div>
+        </div>
+
+        <div class="pt-8 border-t border-slate-50 dark:border-slate-700 flex justify-end gap-4">
+            <button type="submit" class="w-full md:w-auto px-12 py-4 bg-indigo-600 text-white rounded-2xl font-black shadow-xl shadow-indigo-100 dark:shadow-none hover:bg-indigo-700 active:scale-95 transition-all">
+                Atualizar Registo
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,134 @@
+<div class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+        <h2 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight">
+            Olá, {{user.nome}}! 👋
+        </h2>
+        <p class="text-slate-500 dark:text-slate-400 font-medium">
+            Bem-vindo ao painel de controlo da Biblioteca LHVR.
+        </p>
+    </div>
+
+    <a href="/logout" class="px-6 py-3 bg-rose-100 hover:bg-rose-200 dark:bg-rose-900/30 dark:hover:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-2xl font-black text-sm transition-all flex items-center gap-2 shadow-sm border border-rose-200 dark:border-rose-800 group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+        Sair do Sistema
+    </a>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center gap-5 transition-transform hover:scale-[1.02]">
+        <div class="bg-blue-100 dark:bg-blue-900/30 p-4 rounded-2xl text-blue-600 dark:text-blue-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Acervo</p>
+            <h3 class="text-2xl font-black text-slate-800 dark:text-white">{{stats.totalLivros}}</h3>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center gap-5 transition-transform hover:scale-[1.02]">
+        <div class="bg-indigo-100 dark:bg-indigo-900/30 p-4 rounded-2xl text-indigo-600 dark:text-indigo-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Alunos</p>
+            <h3 class="text-2xl font-black text-slate-800 dark:text-white">{{stats.totalAlunos}}</h3>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center gap-5 transition-transform hover:scale-[1.02]">
+        <div class="bg-emerald-100 dark:bg-emerald-900/30 p-4 rounded-2xl text-emerald-600 dark:text-emerald-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Empréstimos</p>
+            <h3 class="text-2xl font-black text-slate-800 dark:text-white">{{stats.emprestimosAtivos}}</h3>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center gap-5 transition-transform hover:scale-[1.02]">
+        <div class="bg-amber-100 dark:bg-amber-900/30 p-4 rounded-2xl text-amber-600 dark:text-amber-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+        </div>
+        <div>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Reservas</p>
+            <h3 class="text-2xl font-black text-slate-800 dark:text-white">{{stats.reservasPendentes}}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden transition-all">
+    <div class="p-8 border-b border-slate-50 dark:border-slate-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-tight flex items-center gap-2">
+                Ranking de Leitores 🏆
+            </h3>
+            <p class="text-sm text-slate-400 dark:text-slate-500 font-medium">Os utilizadores com maior volume de leituras no sistema</p>
+        </div>
+        <div class="flex gap-2 w-full sm:w-auto">
+            <a href="/ranking" class="flex-1 sm:flex-none text-center px-5 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl text-sm font-bold hover:bg-slate-200 transition-all">
+                Ver Tudo
+            </a>
+            <a href="/exportar-ranking" class="flex-1 sm:flex-none text-center px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-indigo-100 dark:shadow-none hover:bg-indigo-700 transition-all">
+                Exportar Excel
+            </a>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
+                    <th class="px-8 py-5">Posição</th>
+                    <th class="px-8 py-5">Aluno</th>
+                    <th class="px-8 py-5">Curso</th>
+                    <th class="px-8 py-5">Matrícula</th>
+                    <th class="px-8 py-5 text-right">Total Leituras</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
+                {{#each ranking}}
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors">
+                    <td class="px-8 py-5">
+                        <span class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-black text-slate-600 dark:text-slate-300">
+                            {{math @index "+" 1}}
+                        </span>
+                    </td>
+                    <td class="px-8 py-5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold border border-indigo-100 dark:border-indigo-800">
+                                {{substring aluno.nome 0 1}}
+                            </div>
+                            <span class="font-bold text-slate-700 dark:text-slate-200">{{aluno.nome}}</span>
+                        </div>
+                    </td>
+                    <td class="px-8 py-5 text-slate-500 dark:text-slate-400 font-medium italic">
+                        {{#if aluno.curso}}{{aluno.curso}}{{else}}Geral{{/if}}
+                    </td>
+                    <td class="px-8 py-5 font-mono text-xs text-slate-400">{{aluno.documento}}</td>
+                    <td class="px-8 py-5 text-right">
+                        <span class="px-4 py-1.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-xl font-black text-sm">
+                            {{total_leituras}}
+                        </span>
+                    </td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td colspan="5" class="px-8 py-16 text-center text-slate-400 font-medium italic">
+                        Ainda não existem dados de movimentação para gerar o ranking.
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

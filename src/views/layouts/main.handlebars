@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca LHVR - Sistema de Gestão</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: { 50: '#eef2ff', 600: '#4f46e5' }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        :root { --base-font-size: 16px; }
+        html { font-size: var(--base-font-size); }
+        .sidebar-link-active { background-color: #f1f5f9; color: #4f46e5; }
+        .dark .sidebar-link-active { background-color: #334155; color: #818cf8; }
+    </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen">
+
+    <div class="fixed bottom-6 right-6 z-50 flex items-center space-x-1 bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700">
+        <button onclick="changeFontSize(-2)" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl font-black text-xs text-slate-400 transition-colors" title="Diminuir Fonte">A-</button>
+        <button onclick="changeFontSize(2)" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl font-black text-base text-slate-600 transition-colors" title="Aumentar Fonte">A+</button>
+        <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+        <button id="theme-toggle" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors">
+            <span id="theme-icon">🌙</span>
+        </button>
+    </div>
+
+    <div class="flex">
+        <aside class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 p-6 flex flex-col hidden md:flex h-screen sticky top-0">
+            <div class="flex items-center space-x-3 mb-10 px-2">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white shadow-lg shadow-indigo-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <h1 class="text-xl font-black tracking-tighter dark:text-white">Biblioteca LHVR</h1>
+            </div>
+            
+            <nav class="space-y-1 flex-grow">
+                <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest px-3 mb-2">Menu</p>
+                
+                <a href="/" class="flex items-center p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-sm transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600">
+                    Painel Geral
+                </a>
+
+                {{#if (eq user.tipo_usuario 'ALUNO')}}
+                    <a href="/ranking" class="flex items-center p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-sm transition-all text-slate-600 dark:text-slate-400">
+                        Ranking de Leitores
+                    </a>
+                {{else}}
+                    <div class="pt-6 pb-2 px-3">
+                        <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Gestão de Acervo</p>
+                    </div>
+                    
+                    <a href="/livros" class="flex items-center p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-sm transition-all text-slate-600 dark:text-slate-400">
+                        Acervo de Livros
+                    </a>
+                    
+                    <a href="/emprestimos" class="flex items-center p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-sm transition-all text-slate-600 dark:text-slate-400">
+                        Empréstimos
+                    </a>
+                    
+                    {{#if (eq user.tipo_usuario 'ADMIN')}}
+                        <div class="pt-6 pb-2 px-3">
+                            <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Administração</p>
+                        </div>
+                        <a href="/usuarios" class="flex items-center p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-sm transition-all text-slate-600 dark:text-slate-400">
+                            Gerir Utilizadores
+                        </a>
+                    {{/if}}
+                {{/if}}
+            </nav>
+
+            <div class="mt-auto pt-6 border-t border-slate-100 dark:border-slate-700">
+                <div class="mb-4 px-3 flex flex-col gap-1">
+                    <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Sessão Iniciada</p>
+                    <p class="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">{{user.nome}}</p>
+                    <div class="flex">
+                        <span class="text-[9px] px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-full font-black uppercase">
+                            {{user.tipo_usuario}}
+                        </span>
+                    </div>
+                </div>
+                
+                <a href="/logout" class="flex items-center justify-center p-3 rounded-xl text-rose-600 font-bold text-sm bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-all border border-rose-100 dark:border-rose-900/30">
+                    <span>Terminar Sessão</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-grow p-8 pb-24 max-w-7xl mx-auto">
+            {{#if success}}
+                <div class="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-2xl font-bold text-sm border border-emerald-100 dark:border-emerald-900/30 animate-pulse">
+                    ✅ {{success}}
+                </div>
+            {{/if}}
+            
+            {{#if error}}
+                <div class="mb-6 p-4 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-2xl font-bold text-sm border border-rose-100 dark:border-rose-900/30">
+                    ⚠️ {{error}}
+                </div>
+            {{/if}}
+
+            {{{body}}}
+        </main>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        function applyTheme(theme) {
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            if (themeIcon) themeIcon.innerText = theme === 'dark' ? '☀️' : '🌙';
+            localStorage.setItem('theme', theme);
+        }
+
+        themeToggle?.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            applyTheme(isDark ? 'light' : 'dark');
+        });
+
+        function applyFontSize(size) {
+            document.documentElement.style.setProperty('--base-font-size', size + 'px');
+            localStorage.setItem('fontSize', size);
+        }
+
+        function changeFontSize(delta) {
+            let size = parseInt(localStorage.getItem('fontSize')) || 16;
+            size = Math.min(Math.max(size + delta, 12), 24);
+            applyFontSize(size);
+        }
+
+        window.onload = () => {
+            applyTheme(localStorage.getItem('theme') || 'light');
+            applyFontSize(parseInt(localStorage.getItem('fontSize')) || 16);
+        };
+    </script>
+</body>
+</html>

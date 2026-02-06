@@ -1,0 +1,89 @@
+<div class="mb-8">
+    <a href="/emprestimos" class="inline-flex items-center gap-2 text-slate-400 hover:text-indigo-600 font-bold text-xs uppercase tracking-widest mb-4 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Voltar ao Histórico
+    </a>
+    <h2 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Nova Movimentação</h2>
+    <p class="text-slate-500 dark:text-slate-400 font-medium">Selecione o livro e o utilizador para realizar um novo empréstimo ou reserva.</p>
+</div>
+
+<div class="max-w-4xl bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 p-8 md:p-12">
+    <form action="/emprestimos/store" method="POST" class="space-y-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <div class="relative">
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Livro (Disponível)
+                </label>
+                <select name="livro_id" required 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white appearance-none cursor-pointer">
+                    <option value="" disabled selected>Selecione um título...</option>
+                    {{#each livros}}
+                        <option value="{{this.id}}">{{this.nome}} ({{this.tombo}})</option>
+                    {{/each}}
+                </select>
+                <div class="absolute right-5 top-[3.2rem] pointer-events-none text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="relative">
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Utilizador / Aluno
+                </label>
+                <select name="usuario_id" required 
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white appearance-none cursor-pointer">
+                    <option value="" disabled selected>Selecione o aluno...</option>
+                    {{#each usuarios}}
+                        <option value="{{this.id}}">{{this.nome}} - {{this.documento}}</option>
+                    {{/each}}
+                </select>
+                <div class="absolute right-5 top-[3.2rem] pointer-events-none text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <label class="block text-xs font-black uppercase text-slate-400 dark:text-slate-500 mb-2 ml-1 tracking-widest">
+                    Tipo de Operação
+                </label>
+                <div class="flex gap-4">
+                    <label class="flex-1 cursor-pointer group">
+                        <input type="radio" name="tipo" value="EMPRESTIMO" checked class="hidden peer">
+                        <div class="p-4 text-center rounded-2xl border-2 border-slate-100 dark:border-slate-700 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/20 transition-all">
+                            <span class="block text-sm font-black uppercase tracking-tight text-slate-400 peer-checked:text-indigo-600">
+                                Empréstimo
+                            </span>
+                            <span class="text-[10px] text-slate-400">Prazo: 7 dias</span>
+                        </div>
+                    </label>
+                    
+                    <label class="flex-1 cursor-pointer group">
+                        <input type="radio" name="tipo" value="RESERVA" class="hidden peer">
+                        <div class="p-4 text-center rounded-2xl border-2 border-slate-100 dark:border-slate-700 peer-checked:border-amber-500 peer-checked:bg-amber-50 dark:peer-checked:bg-amber-900/20 transition-all">
+                            <span class="block text-sm font-black uppercase tracking-tight text-slate-400 peer-checked:text-amber-500">
+                                Reserva
+                            </span>
+                            <span class="text-[10px] text-slate-400">Prazo: 2 dias</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-8 border-t border-slate-50 dark:border-slate-700 flex justify-end gap-4">
+            <button type="submit" class="w-full md:w-auto px-12 py-4 bg-indigo-600 text-white rounded-2xl font-black shadow-xl shadow-indigo-100 dark:shadow-none hover:bg-indigo-700 active:scale-95 transition-all">
+                Registar Saída
+            </button>
+        </div>
+    </form>
+</div>

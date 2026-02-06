@@ -1,0 +1,99 @@
+<div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+        <h2 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Gestão de Utilizadores</h2>
+        <p class="text-slate-500 dark:text-slate-400 font-medium">Controle o acesso de alunos, bibliotecários e administradores.</p>
+    </div>
+    
+    <a href="/usuarios/novo" class="px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-sm shadow-xl shadow-indigo-100 dark:shadow-none hover:bg-indigo-700 transition-all flex items-center gap-2 active:scale-95">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+        </svg>
+        Novo Utilizador
+    </a>
+</div>
+
+<div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 uppercase text-[10px] font-black tracking-widest border-b border-slate-50 dark:border-slate-700">
+                    <th class="px-8 py-5">Utilizador</th>
+                    <th class="px-8 py-5">Documento / Curso</th>
+                    <th class="px-8 py-5">Tipo</th>
+                    <th class="px-8 py-5">Estado</th>
+                    <th class="px-8 py-5 text-right">Ações</th>
+                </tr>
+            </thead>
+            
+            <tbody class="divide-y divide-slate-50 dark:divide-slate-700">
+                {{#each usuarios}}
+                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors group">
+                    <td class="px-8 py-5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-bold text-slate-400 dark:text-slate-500">
+                                {{substring this.nome 0 1}}
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-700 dark:text-slate-200">{{this.nome}}</span>
+                                <span class="text-xs text-slate-400 tracking-tight">{{this.email}}</span>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td class="px-8 py-5">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-mono text-slate-600 dark:text-slate-400">{{this.documento}}</span>
+                            <span class="text-xs text-slate-400 italic">
+                                {{#if this.curso}}{{this.curso}}{{else}}---{{/if}}
+                            </span>
+                        </div>
+                    </td>
+
+                    <td class="px-8 py-5">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider 
+                            {{#if (eq this.tipo_usuario 'ADMIN')}}bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400{{/if}}
+                            {{#if (eq this.tipo_usuario 'BIBLIOTECARIO')}}bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400{{/if}}
+                            {{#if (eq this.tipo_usuario 'ALUNO')}}bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400{{/if}}">
+                            {{this.tipo_usuario}}
+                        </span>
+                    </td>
+
+                    <td class="px-8 py-5">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full 
+                                {{#if this.status}}bg-emerald-500 shadow-lg shadow-emerald-200{{else}}bg-slate-300{{/if}}">
+                            </div>
+                            <span class="text-xs font-bold {{#if this.status}}text-emerald-600{{else}}text-slate-400{{/if}} uppercase">
+                                {{#if this.status}}Ativo{{else}}Inativo{{/if}}
+                            </span>
+                        </div>
+                    </td>
+
+                    <td class="px-8 py-5 text-right">
+                        <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <a href="/usuarios/editar/{{this.id}}" class="p-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-xl transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </a>
+                            <form action="/usuarios/delete/{{this.id}}" method="POST" class="inline" onsubmit="return confirm('Tem certeza que deseja remover este utilizador?')">
+                                <button type="submit" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td colspan="5" class="px-8 py-20 text-center text-slate-400 font-medium italic">
+                        Nenhum utilizador encontrado no sistema.
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
