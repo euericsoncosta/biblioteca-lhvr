@@ -1,0 +1,173 @@
+<div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+    <div>
+        <div class="flex items-center gap-3 mb-2">
+            <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-lg text-[10px] font-black uppercase tracking-widest">Domínio Público</span>
+            <h2 class="text-4xl font-black text-slate-800 dark:text-white tracking-tighter">Explorar Digital 🌐</h2>
+        </div>
+        <p class="text-slate-500 dark:text-slate-400 font-medium">Acesso gratuito a milhares de obras através do Projeto Gutenberg.</p>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center">
+        <button onclick="setLanguage('pt')" id="lang-pt" class="lang-tab active px-6 py-2.5 rounded-xl font-bold text-xs transition-all">🇵🇹 Obras em Português</button>
+        <button onclick="setLanguage('en,fr,es')" id="lang-intl" class="lang-tab px-6 py-2.5 rounded-xl font-bold text-xs transition-all">🌍 Clássicos Mundiais</button>
+    </div>
+</div>
+
+<div class="mb-10 space-y-6">
+    <div class="relative group max-w-2xl">
+        <input type="text" id="search-input" placeholder="Pesquisar por título ou autor..." class="w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white shadow-sm">
+        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto no-scrollbar pb-2">
+        <div class="flex space-x-2 min-w-max">
+            <button onclick="setGenre('')" id="genre-all" class="genre-btn active px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Todos</button>
+            <button onclick="setGenre('fiction')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Ficção</button>
+            <button onclick="setGenre('poetry')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Poesia</button>
+            <button onclick="setGenre('history')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">História</button>
+            <button onclick="setGenre('philosophy')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Filosofia</button>
+            <button onclick="setGenre('science')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Ciência</button>
+            <button onclick="setGenre('juvenile')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Infanto-Juvenil</button>
+        </div>
+    </div>
+</div>
+
+<div id="books-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 min-h-[400px]">
+    </div>
+
+<div class="mt-16 flex justify-center items-center gap-6" id="pagination-controls">
+    <button id="prev-btn" onclick="changePage(-1)" disabled class="p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-400 hover:text-indigo-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
+        </svg>
+    </button>
+    <span id="page-indicator" class="font-black text-xs uppercase tracking-widest text-slate-400">Página 1</span>
+    <button id="next-btn" onclick="changePage(1)" class="p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-600 hover:text-indigo-600 transition-all active:scale-95 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+        </svg>
+    </button>
+</div>
+
+<style>
+    .lang-tab { color: #94a3b8; }
+    .lang-tab.active { background-color: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2); }
+    .dark .lang-tab.active { background-color: #6366f1; }
+    .genre-btn { color: #94a3b8; border: 1px solid transparent; }
+    .genre-btn:hover { background-color: #f1f5f9; color: #4f46e5; }
+    .genre-btn.active { background-color: #4f46e5; color: white; }
+    .dark .genre-btn:hover { background-color: #1e293b; }
+    .dark .genre-btn.active { background-color: #6366f1; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+</style>
+
+<script>
+    let currentPage = 1;
+    let currentGenre = '';
+    let currentSearch = '';
+    let currentLangs = 'pt';
+
+    async function fetchBooks() {
+        const grid = document.getElementById('books-grid');
+        const pageIndicator = document.getElementById('page-indicator');
+
+        // Skeleton Loader
+        grid.innerHTML = Array(10).fill(0).map(() => `
+            <div class="animate-pulse bg-white dark:bg-slate-800 rounded-[2.5rem] h-80 border border-slate-100 dark:border-slate-700"></div>
+        `).join('');
+
+        try {
+            let url = `https://gutendex.com/books/?page=${currentPage}&languages=${currentLangs}`;
+            if (currentGenre) url += `&topic=${currentGenre}`;
+            if (currentSearch) url += `&search=${encodeURIComponent(currentSearch)}`;
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 12000);
+            const response = await fetch(url, { signal: controller.signal });
+            clearTimeout(timeoutId);
+
+            const data = await response.json();
+
+            if (!data.results || data.results.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-20 text-center text-slate-400 font-bold uppercase italic tracking-widest">Nenhuma obra encontrada. Tente outro termo ou categoria.</div>`;
+                return;
+            }
+
+            grid.innerHTML = data.results.map(book => {
+                const cover = book.formats['image/jpeg'] || 'https://via.placeholder.com/300x450?text=Sem+Capa';
+                const readLink = book.formats['text/html'] || book.formats['application/pdf'] || book.formats['text/plain; charset=utf-8'] || '#';
+                const authorName = book.authors.length > 0 ? book.authors[0].name.split(',').reverse().join(' ') : 'Autor Desconhecido';
+
+                return `
+                    <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group relative">
+                        <div class="h-64 overflow-hidden bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4 border-b dark:border-slate-700 relative">
+                            <img src="${cover}" alt="${book.title}" class="h-full object-contain shadow-xl rounded-md group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/150x220?text=Indisponivel'">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h4 class="text-sm font-black text-slate-800 dark:text-white line-clamp-2 leading-tight mb-1 group-hover:text-indigo-600 transition-colors">
+                                ${book.title}
+                            </h4>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight mb-4">
+                                ${authorName}
+                            </p>
+                            <a href="${readLink}" target="_blank" class="mt-auto block w-full py-3 bg-slate-100 dark:bg-slate-700 hover:bg-indigo-600 hover:text-white text-slate-600 dark:text-slate-300 rounded-xl font-black text-center text-[10px] uppercase tracking-widest transition-all">
+                                Ler Online
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            pageIndicator.innerText = `Página ${currentPage}`;
+            document.getElementById('prev-btn').disabled = !data.previous;
+            document.getElementById('next-btn').disabled = !data.next;
+
+        } catch (error) {
+            grid.innerHTML = `
+                <div class="col-span-full py-20 text-center">
+                    <p class="text-rose-500 font-black text-xl mb-2">Servidor Indisponível 🛠️</p>
+                    <button onclick="fetchBooks()" class="px-8 py-3 bg-indigo-600 text-white rounded-2xl font-bold text-xs uppercase tracking-widest">Tentar Novamente</button>
+                </div>
+            `;
+        }
+    }
+
+    function setLanguage(langs) {
+        currentLangs = langs;
+        currentPage = 1;
+        document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        if (langs === 'pt') document.getElementById('lang-pt').classList.add('active');
+        else document.getElementById('lang-intl').classList.add('active');
+        fetchBooks();
+    }
+
+    function setGenre(genre) {
+        currentGenre = genre;
+        currentPage = 1;
+        document.querySelectorAll('.genre-btn').forEach(btn => btn.classList.remove('active'));
+        if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        fetchBooks();
+    }
+
+    function changePage(delta) {
+        currentPage += delta;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        fetchBooks();
+    }
+
+    let searchTimeout;
+    document.getElementById('search-input').addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            currentSearch = e.target.value;
+            currentPage = 1;
+            fetchBooks();
+        }, 800);
+    });
+
+    window.onload = fetchBooks;
+</script>

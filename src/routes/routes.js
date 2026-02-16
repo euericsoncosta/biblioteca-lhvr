@@ -4,6 +4,7 @@ import LivroController from "../controllers/LivroController.js";
 import EmprestimoController from "../controllers/EmprestimoController.js";
 import UsuarioController from "../controllers/UsuarioController.js";
 import AuthController from "../controllers/AuthController.js";
+import DigitalLibraryController from "../controllers/DigitalLibraryController.js";
 
 const routes = new Router();
 
@@ -51,6 +52,9 @@ routes.use(authMiddleware);
 routes.get("/", HomeController.index);
 routes.get("/ranking", HomeController.rankingLeitores);
 routes.get("/exportar-ranking", HomeController.exportarRanking);
+
+// 2. ADICIONAR A ROTA DA BIBLIOTECA DIGITAL (Acessível a Alunos e Staff)
+routes.get("/biblioteca-digital", DigitalLibraryController.index);
 
 // --- ROTAS RESTRITAS (STAFF - BIBLIOTECÁRIO OU ADMIN) ---
 
