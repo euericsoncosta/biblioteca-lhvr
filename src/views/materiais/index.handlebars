@@ -1,20 +1,20 @@
 <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
   <div>
     <h2 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Materiais de Revisão 📚</h2>
-    <p class="text-slate-500 dark:text-slate-400 font-medium">Conteúdos organizados por disciplina, ano e bimestre.</p>
+    <p class="text-slate-500 dark:text-slate-400 font-medium text-sm">Conteúdos organizados para o seu estudo e revisão.</p>
   </div>
 
   {{#unless (eq user.tipo_usuario 'ALUNO')}}
-  <a href="/materiais/novo" class="px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-sm shadow-xl hover:bg-indigo-700 transition-all flex items-center gap-2">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
-    </svg>
-    Publicar Conteúdo
-  </a>
+    <a href="/materiais/novo" class="px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-sm shadow-xl hover:bg-indigo-700 transition-all flex items-center gap-2 active:scale-95">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+      </svg>
+      Publicar Conteúdo
+    </a>
   {{/unless}}
 </div>
 
-<div class="bg-white dark:bg-slate-800 p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-700 mb-8">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-700 mb-8 transition-all">
   <form action="/materiais" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
     
     <div>
@@ -31,10 +31,10 @@
       <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Bimestre</label>
       <select name="bimestre" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 outline-none dark:text-white">
         <option value="">Todos</option>
-        <option value="1" {{#if (eq filtros.bimestre '1')}}selected{{/if}}>1º Bimestre</option>
-        <option value="2" {{#if (eq filtros.bimestre '2')}}selected{{/if}}>2º Bimestre</option>
-        <option value="3" {{#if (eq filtros.bimestre '3')}}selected{{/if}}>3º Bimestre</option>
-        <option value="4" {{#if (eq filtros.bimestre '4')}}selected{{/if}}>4º Bimestre</option>
+        <option value="1" {{#if (eq filtros.bimestre '1')}}selected{{/if}}>1º Bim</option>
+        <option value="2" {{#if (eq filtros.bimestre '2')}}selected{{/if}}>2º Bim</option>
+        <option value="3" {{#if (eq filtros.bimestre '3')}}selected{{/if}}>3º Bim</option>
+        <option value="4" {{#if (eq filtros.bimestre '4')}}selected{{/if}}>4º Bim</option>
       </select>
     </div>
 
@@ -45,12 +45,17 @@
         <optgroup label="Base Comum">
           <option value="Português" {{#if (eq filtros.disciplina 'Português')}}selected{{/if}}>Português</option>
           <option value="Matemática" {{#if (eq filtros.disciplina 'Matemática')}}selected{{/if}}>Matemática</option>
+          <option value="História" {{#if (eq filtros.disciplina 'História')}}selected{{/if}}>História</option>
+          <option value="Geografia" {{#if (eq filtros.disciplina 'Geografia')}}selected{{/if}}>Geografia</option>
+          <option value="Biologia" {{#if (eq filtros.disciplina 'Biologia')}}selected{{/if}}>Biologia</option>
+          <option value="Física" {{#if (eq filtros.disciplina 'Física')}}selected{{/if}}>Física</option>
+          <option value="Química" {{#if (eq filtros.disciplina 'Química')}}selected{{/if}}>Química</option>
         </optgroup>
         <optgroup label="Cursos Técnicos">
-          <option value="Informatica" {{#if (eq filtros.disciplina 'Informatica')}}selected{{/if}}>Informática</option>
+          <option value="Informática" {{#if (eq filtros.disciplina 'Informática')}}selected{{/if}}>Informática</option>
           <option value="Finanças" {{#if (eq filtros.disciplina 'Finanças')}}selected{{/if}}>Finanças</option>
           <option value="Enfermagem" {{#if (eq filtros.disciplina 'Enfermagem')}}selected{{/if}}>Enfermagem</option>
-          <option value="Agronegocio" {{#if (eq filtros.disciplina 'Agronegocio')}}selected{{/if}}>Agronegócio</option>
+          <option value="Agronegócio" {{#if (eq filtros.disciplina 'Agronegócio')}}selected{{/if}}>Agronegócio</option>
           <option value="Segurança do Trabalho" {{#if (eq filtros.disciplina 'Segurança do Trabalho')}}selected{{/if}}>Segurança do Trabalho</option>
         </optgroup>
       </select>
@@ -58,7 +63,7 @@
 
     <div>
       <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Ano Letivo</label>
-      <input type="number" name="ano_referencia" value="{{filtros.ano_referencia}}" placeholder="2024" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 outline-none dark:text-white">
+      <input type="number" name="ano_referencia" value="{{#if filtros.ano_referencia}}{{filtros.ano_referencia}}{{else}}2024{{/if}}" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 outline-none dark:text-white">
     </div>
 
     <button type="submit" class="bg-indigo-600 text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg">
@@ -69,39 +74,62 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   {{#each materiais}}
-  <div class="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 p-6 shadow-sm hover:shadow-xl transition-all flex flex-col group">
-    
-    <div class="flex justify-between items-start mb-4">
-      <span class="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg text-[10px] font-black uppercase">
-        {{this.disciplina}}
-      </span>
-      <div class="flex gap-2">
-        <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded text-[9px] font-bold">
-          {{this.ano_escolar}}º Ano
+    <div class="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col group relative">
+      
+      <div class="flex justify-between items-start mb-4">
+        <span class="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg text-[10px] font-black uppercase tracking-widest">
+          {{this.disciplina}}
         </span>
-        <span class="px-2 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded text-[9px] font-bold">
-          {{this.bimestre}}º Bim
-        </span>
+        <div class="flex gap-1.5">
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-md text-[9px] font-black">
+            {{this.ano_escolar}}º ANO
+          </span>
+          <span class="px-2 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-md text-[9px] font-black uppercase">
+            {{this.bimestre}}º BIM
+          </span>
+        </div>
       </div>
+
+      <h3 class="text-lg font-black text-slate-800 dark:text-white mb-2 leading-tight group-hover:text-indigo-600 transition-colors">
+        {{this.titulo}}
+      </h3>
+      
+      <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 italic">
+        {{#if this.descricao}}{{this.descricao}}{{else}}Sem descrição adicional.{{/if}}
+      </p>
+
+      <div class="mt-auto pt-6 border-t border-slate-50 dark:border-slate-700 flex justify-between items-center">
+        <div class="flex flex-col">
+          <span class="text-[9px] font-black uppercase text-slate-300 dark:text-slate-500 tracking-widest">Professor</span>
+          <span class="text-xs font-bold text-slate-600 dark:text-slate-300">{{this.professor.nome}}</span>
+        </div>
+        
+        <a href="{{this.link_recurso}}" target="_blank" class="px-5 py-2.5 bg-emerald-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100 dark:shadow-none active:scale-95">
+          Aceder Recurso
+        </a>
+      </div>
+
+      {{#if (eq ../user.tipo_usuario 'ADMIN')}}
+        <div class="mt-4 border-t border-slate-100 dark:border-slate-700 pt-4 flex justify-center">
+          <form action="/materiais/delete/{{this.id}}" method="POST" onsubmit="return confirm('Deseja eliminar este material de estudo permanentemente?')">
+            <button type="submit" class="flex items-center gap-2 text-[10px] font-black uppercase text-rose-400 hover:text-rose-600 transition-colors tracking-widest">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Eliminar Material
+            </button>
+          </form>
+        </div>
+      {{/if}}
     </div>
-
-    <h3 class="text-lg font-black text-slate-800 dark:text-white mb-2 leading-tight group-hover:text-indigo-600 transition-colors">
-      {{this.titulo}}
-    </h3>
-
-    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 italic">
-      {{this.descricao}}
-    </p>
-
-    <div class="mt-auto pt-6 border-t border-slate-50 dark:border-slate-700 flex justify-between items-center">
-      <span class="text-xs font-bold text-slate-600 dark:text-slate-300">
-        Prof. {{this.professor.nome}}
-      </span>
-      <a href="{{this.link_recurso}}" target="_blank" class="px-5 py-2.5 bg-emerald-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-sm">
-        Aceder
-      </a>
+  {{else}}
+    <div class="col-span-full py-24 text-center bg-white dark:bg-slate-800 rounded-[3rem] border border-slate-100 dark:border-slate-700">
+      <div class="text-slate-200 dark:text-slate-700 mb-4 flex justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      </div>
+      <p class="text-slate-400 font-bold uppercase tracking-[0.2em] text-xs">Nenhum conteúdo publicado para estes filtros.</p>
     </div>
-
-  </div>
   {{/each}}
 </div>
