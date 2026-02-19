@@ -5,8 +5,9 @@ import Usuario from "../models/Usuario.js";
 import Livro from "../models/Livro.js";
 import Movimentacao from "../models/Movimentacao.js";
 import Permissao from "../models/Permissao.js";
+import Material from "../models/Material.js";
 
-const models = [Usuario, Livro, Movimentacao, Permissao]; // Lista de modelos a serem inicializados
+const models = [Usuario, Livro, Movimentacao, Permissao, Material]; // Lista de modelos a serem inicializados
 // Configuração do Sequelize para conexão com o banco de dados
 // O arquivo de configuração deve exportar um objeto com as informações necessárias
 // como dialect, host, username, password e database

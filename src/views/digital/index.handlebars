@@ -1,21 +1,21 @@
 <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
     <div>
         <div class="flex items-center gap-3 mb-2">
-            <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-lg text-[10px] font-black uppercase tracking-widest">Domínio Público</span>
+            <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-200 dark:border-emerald-800">Acervo Aberto</span>
             <h2 class="text-4xl font-black text-slate-800 dark:text-white tracking-tighter">Explorar Digital 🌐</h2>
         </div>
-        <p class="text-slate-500 dark:text-slate-400 font-medium">Acesso gratuito a milhares de obras através do Projeto Gutenberg.</p>
+        <p class="text-slate-500 dark:text-slate-400 font-medium italic">Clássicos da literatura brasileira e mundial ao seu alcance.</p>
     </div>
 
     <div class="bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center">
-        <button onclick="setLanguage('pt')" id="lang-pt" class="lang-tab active px-6 py-2.5 rounded-xl font-bold text-xs transition-all">🇵🇹 Obras em Português</button>
-        <button onclick="setLanguage('en,fr,es')" id="lang-intl" class="lang-tab px-6 py-2.5 rounded-xl font-bold text-xs transition-all">🌍 Clássicos Mundiais</button>
+        <button onclick="setLanguage('pt')" id="lang-pt" class="lang-tab active px-6 py-2.5 rounded-xl font-bold text-xs transition-all">🇧🇷 Obras em PT-BR</button>
+        <button onclick="setLanguage('en,fr,es')" id="lang-intl" class="lang-tab px-6 py-2.5 rounded-xl font-bold text-xs transition-all">🌍 Clássicos Internacionais</button>
     </div>
 </div>
 
 <div class="mb-10 space-y-6">
     <div class="relative group max-w-2xl">
-        <input type="text" id="search-input" placeholder="Pesquisar por título ou autor..." class="w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white shadow-sm">
+        <input type="text" id="search-input" placeholder="Pesquise por título ou autor (ex: Machado de Assis)..." class="w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white shadow-sm">
         <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -25,8 +25,8 @@
 
     <div class="overflow-x-auto no-scrollbar pb-2">
         <div class="flex space-x-2 min-w-max">
-            <button onclick="setGenre('')" id="genre-all" class="genre-btn active px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Todos</button>
-            <button onclick="setGenre('fiction')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Ficção</button>
+            <button onclick="setGenre('')" id="genre-all" class="genre-btn active px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Todos os Clássicos</button>
+            <button onclick="setGenre('fiction')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Ficção / Romance</button>
             <button onclick="setGenre('poetry')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Poesia</button>
             <button onclick="setGenre('history')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">História</button>
             <button onclick="setGenre('philosophy')" class="genre-btn px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Filosofia</button>
@@ -45,7 +45,9 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
         </svg>
     </button>
-    <span id="page-indicator" class="font-black text-xs uppercase tracking-widest text-slate-400">Página 1</span>
+    <div class="flex flex-col items-center">
+        <span id="page-indicator" class="font-black text-[10px] uppercase tracking-[0.2em] text-slate-400">Página 1</span>
+    </div>
     <button id="next-btn" onclick="changePage(1)" class="p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-600 hover:text-indigo-600 transition-all active:scale-95 shadow-sm">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
@@ -86,26 +88,31 @@
             if (currentSearch) url += `&search=${encodeURIComponent(currentSearch)}`;
 
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 12000);
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
             const response = await fetch(url, { signal: controller.signal });
             clearTimeout(timeoutId);
 
             const data = await response.json();
 
             if (!data.results || data.results.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-20 text-center text-slate-400 font-bold uppercase italic tracking-widest">Nenhuma obra encontrada. Tente outro termo ou categoria.</div>`;
+                grid.innerHTML = `<div class="col-span-full py-20 text-center text-slate-400 font-bold uppercase italic tracking-widest">Nenhuma obra encontrada. Tente pesquisar por um autor brasileiro clássico.</div>`;
                 return;
             }
 
             grid.innerHTML = data.results.map(book => {
                 const cover = book.formats['image/jpeg'] || 'https://via.placeholder.com/300x450?text=Sem+Capa';
                 const readLink = book.formats['text/html'] || book.formats['application/pdf'] || book.formats['text/plain; charset=utf-8'] || '#';
-                const authorName = book.authors.length > 0 ? book.authors[0].name.split(',').reverse().join(' ') : 'Autor Desconhecido';
+                
+                const authorRaw = book.authors.length > 0 ? book.authors[0].name : 'Autor Desconhecido';
+                const authorName = authorRaw.includes(',') ? authorRaw.split(',').reverse().join(' ').trim() : authorRaw;
 
                 return `
                     <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group relative">
                         <div class="h-64 overflow-hidden bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4 border-b dark:border-slate-700 relative">
                             <img src="${cover}" alt="${book.title}" class="h-full object-contain shadow-xl rounded-md group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://via.placeholder.com/150x220?text=Indisponivel'">
+                            <div class="absolute top-3 right-3">
+                                <span class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm px-2 py-1 rounded-lg text-[8px] font-black text-slate-400 uppercase tracking-tighter border border-slate-100 dark:border-slate-700">Digital</span>
+                            </div>
                         </div>
                         <div class="p-6 flex-grow flex flex-col">
                             <h4 class="text-sm font-black text-slate-800 dark:text-white line-clamp-2 leading-tight mb-1 group-hover:text-indigo-600 transition-colors">
@@ -114,8 +121,8 @@
                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight mb-4">
                                 ${authorName}
                             </p>
-                            <a href="${readLink}" target="_blank" class="mt-auto block w-full py-3 bg-slate-100 dark:bg-slate-700 hover:bg-indigo-600 hover:text-white text-slate-600 dark:text-slate-300 rounded-xl font-black text-center text-[10px] uppercase tracking-widest transition-all">
-                                Ler Online
+                            <a href="${readLink}" target="_blank" class="mt-auto block w-full py-3 bg-slate-100 dark:bg-slate-700 hover:bg-emerald-600 hover:text-white text-slate-600 dark:text-slate-300 rounded-xl font-black text-center text-[10px] uppercase tracking-widest transition-all">
+                                Ler Agora
                             </a>
                         </div>
                     </div>
@@ -129,8 +136,9 @@
         } catch (error) {
             grid.innerHTML = `
                 <div class="col-span-full py-20 text-center">
-                    <p class="text-rose-500 font-black text-xl mb-2">Servidor Indisponível 🛠️</p>
-                    <button onclick="fetchBooks()" class="px-8 py-3 bg-indigo-600 text-white rounded-2xl font-bold text-xs uppercase tracking-widest">Tentar Novamente</button>
+                    <p class="text-rose-500 font-black text-xl mb-2">Catálogo em Manutenção 🛠️</p>
+                    <p class="text-slate-400 text-xs mb-6">O servidor mundial está a demorar a responder.</p>
+                    <button onclick="fetchBooks()" class="px-8 py-3 bg-indigo-600 text-white rounded-2xl font-bold text-xs uppercase tracking-widest">Tentar Recarregar</button>
                 </div>
             `;
         }

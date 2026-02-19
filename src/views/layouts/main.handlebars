@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-pt">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca LHVR - Sistema de Gestão</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
@@ -15,7 +13,10 @@
             theme: {
                 extend: {
                     colors: {
-                        indigo: { 50: '#eef2ff', 600: '#4f46e5' }
+                        indigo: {
+                            50: '#eef2ff',
+                            600: '#4f46e5'
+                        }
                     }
                 }
             }
@@ -46,7 +47,6 @@
             color: #818cf8;
         }
 
-        /* Esconder scrollbar mas manter funcionalidade */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -71,6 +71,7 @@
 
     <div class="flex">
         <aside class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 p-6 flex flex-col hidden md:flex h-screen sticky top-0">
+            
             <div class="flex items-center space-x-3 mb-10 px-2">
                 <div class="bg-indigo-600 p-2 rounded-lg text-white shadow-lg shadow-indigo-100 dark:shadow-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,6 +90,10 @@
 
                 <a href="/biblioteca-digital" class="flex items-center p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-sm transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600">
                     <span class="mr-3">🌐</span> Biblioteca Digital
+                </a>
+
+                <a href="/materiais" class="flex items-center p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-sm transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600">
+                    <span class="mr-3">📝</span> Materiais de Revisão
                 </a>
 
                 {{#if (eq user.tipo_usuario 'ALUNO')}}
@@ -137,6 +142,7 @@
         </aside>
 
         <main class="flex-grow p-8 pb-24 max-w-7xl mx-auto w-full">
+            
             {{#if success}}
                 <div id="flash-success" class="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-2xl font-bold text-sm border border-emerald-100 dark:border-emerald-900/30 flex items-center gap-2">
                     <span>✅</span> {{success}}
@@ -157,6 +163,7 @@
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
 
+        // Função para alternar entre Dark e Light Mode
         function applyTheme(theme) {
             document.documentElement.classList.toggle('dark', theme === 'dark');
             if (themeIcon) themeIcon.innerText = theme === 'dark' ? '☀️' : '🌙';
@@ -168,6 +175,7 @@
             applyTheme(isDark ? 'light' : 'dark');
         });
 
+        // Controle de Acessibilidade: Tamanho da Fonte
         function applyFontSize(size) {
             document.documentElement.style.setProperty('--base-font-size', size + 'px');
             localStorage.setItem('fontSize', size);
@@ -179,7 +187,7 @@
             applyFontSize(size);
         }
 
-        // Auto-fechar mensagens flash após 5 segundos
+        // Auto-ocultar mensagens flash após 5 segundos
         setTimeout(() => {
             const successMsg = document.getElementById('flash-success');
             const errorMsg = document.getElementById('flash-error');
@@ -187,11 +195,11 @@
             if (errorMsg) errorMsg.style.display = 'none';
         }, 5000);
 
+        // Inicialização ao carregar a página
         window.onload = () => {
             applyTheme(localStorage.getItem('theme') || 'light');
             applyFontSize(parseInt(localStorage.getItem('fontSize')) || 16);
         };
     </script>
 </body>
-
 </html>

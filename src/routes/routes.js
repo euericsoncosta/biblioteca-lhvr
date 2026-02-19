@@ -5,6 +5,7 @@ import EmprestimoController from "../controllers/EmprestimoController.js";
 import UsuarioController from "../controllers/UsuarioController.js";
 import AuthController from "../controllers/AuthController.js";
 import DigitalLibraryController from "../controllers/DigitalLibraryController.js";
+import MaterialController from "../controllers/MaterialController.js"; // Importado o novo controller
 
 const routes = new Router();
 
@@ -48,33 +49,36 @@ routes.get("/logout", AuthController.logout);
 // --- ROTAS PROTEGIDAS (LOGADOS) ---
 routes.use(authMiddleware);
 
-// Todos os logados vêem o Dashboard e Ranking
+// Todos os logados vêem o Dashboard, Ranking e Biblioteca Digital
 routes.get("/", HomeController.index);
 routes.get("/ranking", HomeController.rankingLeitores);
 routes.get("/exportar-ranking", HomeController.exportarRanking);
-
-// 2. ADICIONAR A ROTA DA BIBLIOTECA DIGITAL (Acessível a Alunos e Staff)
 routes.get("/biblioteca-digital", DigitalLibraryController.index);
+
+// NOVO: Materiais de Apoio (Alunos e Professores podem ver e filtrar)
+routes.get("/materiais", MaterialController.index);
 
 // --- ROTAS RESTRITAS (STAFF - BIBLIOTECÁRIO OU ADMIN) ---
 
-// Livros (Acervo)
+// Gestão de Acervo (Livros)
 routes.get("/livros", LivroController.index);
 routes.get("/livros/novo", staffOnly, LivroController.create);
 routes.post("/livros/store", staffOnly, LivroController.store);
 routes.get("/livros/editar/:id", staffOnly, LivroController.edit);
 routes.post("/livros/update/:id", staffOnly, LivroController.update);
 routes.post("/livros/delete/:id", adminOnly, LivroController.delete); 
-
-// ADICIONADO: Rota para exportar o acervo para Excel
 routes.get("/exportar-acervo", staffOnly, LivroController.exportarLivros);
 
-// Empréstimos
+// Gestão de Empréstimos
 routes.get("/emprestimos", staffOnly, EmprestimoController.index);
 routes.get("/emprestimos/novo", staffOnly, EmprestimoController.create);
 routes.post("/emprestimos/store", staffOnly, EmprestimoController.store);
 routes.get("/emprestimos/editar/:id", staffOnly, EmprestimoController.edit);
 routes.post("/emprestimos/update/:id", staffOnly, EmprestimoController.update);
+
+// NOVO: Cadastro de Materiais de Revisão
+routes.get("/materiais/novo", staffOnly, MaterialController.create);
+routes.post("/materiais/store", staffOnly, MaterialController.store);
 
 // --- ROTAS RESTRITAS (ADMIN APENAS) ---
 routes.get("/usuarios", adminOnly, UsuarioController.index);
@@ -83,5 +87,8 @@ routes.post("/usuarios/store", adminOnly, UsuarioController.store);
 routes.get("/usuarios/editar/:id", adminOnly, UsuarioController.edit);
 routes.post("/usuarios/update/:id", adminOnly, UsuarioController.update);
 routes.post("/usuarios/delete/:id", adminOnly, UsuarioController.delete);
+
+// Remoção de materiais também restrita ao Admin por segurança
+routes.post("/materiais/delete/:id", adminOnly, MaterialController.delete);
 
 export default routes;

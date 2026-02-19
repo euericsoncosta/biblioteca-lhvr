@@ -1,0 +1,83 @@
+<div class="mb-8">
+  <a href="/materiais" class="inline-flex items-center gap-2 text-slate-400 hover:text-indigo-600 font-bold text-xs uppercase tracking-widest mb-4 transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+    Voltar
+  </a>
+  <h2 class="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Publicar Conteúdo Técnico/Geral</h2>
+</div>
+
+<div class="max-w-4xl bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 p-8 md:p-12">
+  <form action="/materiais/store" method="POST" class="space-y-8">
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="md:col-span-2">
+        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Título do Conteúdo</label>
+        <input type="text" name="titulo" required placeholder="Ex: Apostila de Redes - 1º Bimestre" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Professor / Responsável</label>
+        <select name="professor_id" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none dark:text-white appearance-none">
+          {{#each professores}}
+            <option value="{{this.id}}">{{this.nome}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Disciplina ou Curso</label>
+        <select name="disciplina" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none dark:text-white appearance-none">
+          <optgroup label="Disciplinas Base">
+            <option value="Português">Português</option>
+            <option value="Matemática">Matemática</option>
+            <option value="História">História</option>
+          </optgroup>
+          <optgroup label="Cursos Técnicos">
+            <option value="Informatica">Informática</option>
+            <option value="Finanças">Finanças</option>
+            <option value="Enfermagem">Enfermagem</option>
+            <option value="Agronegocio">Agronegócio</option>
+            <option value="Segurança do Trabalho">Segurança do Trabalho</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Série</label>
+        <select name="ano_escolar" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none dark:text-white appearance-none">
+          <option value="1">1º Ano</option>
+          <option value="2">2º Ano</option>
+          <option value="3">3º Ano</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Bimestre</label>
+        <select name="bimestre" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none dark:text-white appearance-none">
+          <option value="1">1º Bimestre</option>
+          <option value="2">2º Bimestre</option>
+          <option value="3">3º Bimestre</option>
+          <option value="4">4º Bimestre</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Ano Letivo</label>
+        <input type="number" name="ano_referencia" value="2024" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none dark:text-white">
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1 tracking-widest">Link (Drive/PDF/Site)</label>
+      <input type="url" name="link_recurso" required placeholder="https://..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-600 transition-all dark:text-white">
+    </div>
+
+    <div class="pt-8 border-t border-slate-50 dark:border-slate-700 flex justify-end">
+      <button type="submit" class="px-10 py-4 bg-indigo-600 text-white rounded-2xl font-black shadow-xl hover:bg-indigo-700 transition-all active:scale-95">
+        Publicar Material
+      </button>
+    </div>
+  </form>
+</div>
